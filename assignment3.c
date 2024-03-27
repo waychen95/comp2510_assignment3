@@ -142,9 +142,6 @@ int main(int argc, char *argv[]) {
             strncpy(emp.name, name, MAX_NAME_LENGTH);
             emp.salary = salary;
             employees[employeeCount++] = emp;
-
-            // Debugging output
-            printf("Parsed: ID=%d, Name=%s, Salary=%.2f\n", id, name, salary);
         } else {
             fprintf(outputFile, "Error");
             fclose(inputFile);
@@ -172,8 +169,6 @@ int main(int argc, char *argv[]) {
     // Close files
     fclose(inputFile);
     fclose(outputFile);
-
-    printf("Employee records sorted and written to %s\n", argv[2]);
 
     return 0;
 }
