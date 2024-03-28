@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 #define MAX_NAME_LENGTH 100
 
@@ -18,6 +19,18 @@ int isValidID(int id) {
 
 int isValidSalary(float salary) {
     return salary >= 0;
+}
+
+int isValidName(char *employeeName) {
+    if (strlen(employeeName) == 0) {
+        return 0;
+    }
+    for (int i = 1; i < strlen(employeeName); i++) {
+        if (isdigit(employeeName[i])) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 // Function to compare two employee records for sorting
@@ -101,7 +114,7 @@ int main(int argc, char *argv[]) {
         char lastName[MAX_NAME_LENGTH];
         float salary;
         if (sscanf(line, "%d,%[^,],%f", &id, name, &salary) == 3) {
-            if (!isValidID(id) || !isValidSalary(salary)) {
+            if (!isValidID(id) || !isValidSalary(salary) || !isValidName(name)) {
                 fprintf(outputFile, "Error");
                 fclose(inputFile);
                 fclose(outputFile);
