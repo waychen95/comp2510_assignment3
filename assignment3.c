@@ -6,6 +6,10 @@
 
 #define MAX_NAME_LENGTH 100
 
+//Wayne: A01026253
+//Clement: A01363591
+//Daniel: A01064479
+
 // Structure to hold employee information
 typedef struct {
     int id;
@@ -17,8 +21,16 @@ int isValidID(int id) {
     return id >= 0;
 }
 
-int isValidSalary(float salary) {
-    return salary >= 0;
+int isValidSalary(const char *salary) {
+    // Iterate through each character in the salary string
+    for (int i = 0; salary[i] != '\0'; i++) {
+        // Check if the character is not a digit and not a period
+        if (!isdigit(salary[i]) && salary[i] != '.') {
+            return 0; // Salary contains invalid characters
+        }
+    }
+
+    return 1;
 }
 
 int isValidName(char *employeeName) {
@@ -73,9 +85,9 @@ int main(int argc, char *argv[]) {
     // Read input file line by line
     char line[256];
     bool hasEndDesignator = false;
-    Employee employees[1000]; // Assuming a maximum of 1000 employees
+    Employee employees[1000];
     int employeeCount = 0;
-    int encounteredIDs[1000]; // Assuming a maximum of 1000 employees
+    int encounteredIDs[1000];
     int encounteredCount = 0;
 
     while (fgets(line, sizeof(line), inputFile) != NULL) {
@@ -87,7 +99,7 @@ int main(int argc, char *argv[]) {
             return 0;
         }
 
-        if (line[0] == 'E') { // End designator reached
+        if (line[0] == 'E') {
             hasEndDesignator = true;
             break;
         }
@@ -112,14 +124,17 @@ int main(int argc, char *argv[]) {
         char name[MAX_NAME_LENGTH];
         char firstName[MAX_NAME_LENGTH];
         char lastName[MAX_NAME_LENGTH];
+        char salaryStr[50];
         float salary;
-        if (sscanf(line, "%d,%[^,],%f", &id, name, &salary) == 3) {
-            if (!isValidID(id) || !isValidSalary(salary) || !isValidName(name)) {
+        if (sscanf(line, "%d,%[^,],%s", &id, name, salaryStr) == 3) {
+            if (!isValidID(id) || !isValidSalary(salaryStr) || !isValidName(name)) {
                 fprintf(outputFile, "Error");
                 fclose(inputFile);
                 fclose(outputFile);
                 return 0;
             }
+
+            salary = atof(salaryStr); // Convert salary string to float
 
             // Check if name contains both first name and last name
             if (sscanf(name, "%s %s", firstName, lastName) != 2) {
@@ -147,7 +162,6 @@ int main(int argc, char *argv[]) {
 
             // Store encountered ID
             encounteredIDs[encounteredCount++] = id;
-
 
             // Store employee record
             Employee emp;

@@ -3,9 +3,9 @@ CC = gcc
 CFLAGS = -Wall -std=c11
 
 #Input file
-INPUT = input.txt
+INPUT = error6.txt
 OUTPUT = output.txt
-REF = ref.txt
+REF = ref5.txt
 # Source file
 SRCS = assignment3.c
 # Output
